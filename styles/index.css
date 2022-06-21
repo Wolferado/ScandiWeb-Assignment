@@ -1,0 +1,124 @@
+* {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #fcfcfc;
+}
+
+header {
+    width: 96%;
+    margin: 0px 2%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #000000;
+}
+
+header > h1 {
+    margin-left: calc(100% - 98%);
+}
+
+#btn-container {
+    display: flex;
+    align-items: center;
+    margin-right: calc(100% - 98%);
+}
+
+#btn-container > button {
+    margin: 15px;
+    box-shadow: 2px 2px 0px #000000;
+    font-size: 20px;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    padding: 10px;
+    text-shadow: 2px 2px 0px #000000;
+    cursor: pointer;
+    background-color: #0099EE;
+    color: #FFFFFF;
+}
+
+#btn-container > button:hover {
+    background-color: #0170ac;
+}
+
+#btn-container > button:last-of-type {
+    background-color: #FF3344;
+    color: #fdfdfd;
+    text-shadow: 2px 2px 0px #000000;
+}
+
+#btn-container > button:last-of-type:hover {
+    background-color: #cf1b2a;
+}
+
+section form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: calc(100% - 95%);
+}
+
+.product {
+    width: calc(100% - 81%);
+    height: calc(100% - 70%);
+    font-size: 22px;
+    border: 2px solid #cccccc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1.5% 2%;
+}
+
+.product span:first-of-type {
+    padding-top: 20px;
+}
+
+.product span:last-of-type {
+    padding-bottom: 50px;
+}
+
+.product input {
+    position: relative;
+    display: flex;
+    align-self: flex-start;
+    top: 10px;
+    left: 10px;
+    transform: scale(1.8);
+}
+
+footer {
+    border-top: 2px solid #000000;
+    width: 96%;
+    margin: 0px 2%;
+    height: 100px;
+    bottom: 0px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+@media (max-width: 850px) {
+    .product {
+        width: calc(100% - 86%);
+        height: calc(100% - 75%);
+    }
+}
+
+@media (max-height: 800px) {
+    .product {
+        width: calc(100% - 86%);
+        height: calc(100% - 75%);
+    }
+}
+
+@media (min-width: 1000px) {
+    .product {
+        margin-bottom: 2px;
+    }
+}
