@@ -10,7 +10,7 @@
             return $args['nameField'];
         }
 
-        public function &getPrice($args) {
+        public function getPrice($args) {
             return number_format((float)$args['priceField'], 2, '.', '')." $";
         }
 
@@ -20,7 +20,7 @@
 
         abstract function addToDatabase($args);
 
-        abstract function displayProduct($args);
+        abstract function displayProduct($row);
     }
 
     class DVD extends Product {
@@ -46,7 +46,16 @@
 
         function displayProduct($row)
         {
-            // TODO: Create a function to display product
+            // TODO: Create a function to display product without HTML code
+            
+            echo("<div class='product'>
+            <input class='delete-checkbox' type='checkbox' name='deleteCheckbox[]' value={$row['product_sku']}>
+            <span>{$row['product_sku']}</span>
+            <span>{$row['product_name']}</span>
+            <span>{$row['product_price']}</span>
+            <span>{$row['product_size']} MB</span>
+            </div>");
+            
         }
     }
 
@@ -71,8 +80,16 @@
             $db->addProductToDatabase($sku, $query, $arr);
         }
 
-        function displayProduct($args)
+        function displayProduct($row)
         {
+            
+            echo("<div class='product'>
+            <input class='delete-checkbox' type='checkbox' name='deleteCheckbox[]' value={$row['product_sku']}>
+            <span>{$row['product_sku']}</span>
+            <span>{$row['product_name']}</span>
+            <span>{$row['product_price']}</span>
+            <span>{$row['product_weight']} KG</span> 
+            </div>");
             
         }
     }
@@ -108,8 +125,16 @@
             $db->addProductToDatabase($sku, $query, $arr);
         }
 
-        function displayProduct($args)
+        function displayProduct($row)
         {
+            
+            echo("<div class='product'>
+            <input class='delete-checkbox' type='checkbox' name='deleteCheckbox[]' value={$row['product_sku']}>
+            <span>{$row['product_sku']}</span>
+            <span>{$row['product_name']}</span>
+            <span>{$row['product_price']}</span>
+            <span>{$row['product_height']}x{$row['product_width']}x{$row['product_length']} CM</span> 
+            </div>");
             
         }
     }
@@ -213,5 +238,19 @@
         $product->addToDatabase($args);
     }
 
-    addProduct();
+    function deleteCheckedProducts() {
+        $db = new DatabaseActivity();
+        $db->deleteProductFromDatabase();
+        header("Location: ../index.php");
+    }
+
+    function displayExistingProducts() {
+        $db = new DatabaseActivity();
+        $db->displayProductsFromDatabase();
+    }
+
+    if(basename($_SERVER["PHP_SELF"]) === "product.php" && !isset($_POST['submit']) && isset($_POST['nameField']))
+        addProduct();
+    else if(basename($_SERVER["PHP_SELF"]) === "product.php" && !isset($_POST['submit']) && !isset($_POST['nameField']))
+        deleteCheckedProducts();
 ?>

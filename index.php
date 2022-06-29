@@ -16,10 +16,10 @@
         </div>
     </header>
     <section id="product-list">
-        <form method="POST" action="scripts/display-products.php">
+        <form method="POST" action="scripts/product.php">
             <?php
-                include("scripts/display-products.php");
-                addProductCard();
+                include("scripts/product.php");
+                displayExistingProducts();
             ?>
         </form>
     </section>
