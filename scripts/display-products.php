@@ -10,7 +10,7 @@
             return $row['product_name'];
         }
 
-        public function getPrice($row) {
+        public function &getPrice($row) {
             return number_format((float)$row['product_price'], 2, '.', '')." $";
         }
     }
@@ -104,7 +104,6 @@
     function deleteProductCards() {
         if(isset($_POST['deleteCheckbox'])) {
             $products = $_POST['deleteCheckbox'];
-            $productsSKU = implode(' ', $products);
 
             try {
                 $databaseHandle = new PDO('mysql:host=localhost;dbname=db_products', 'root', '');

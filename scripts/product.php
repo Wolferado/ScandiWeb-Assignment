@@ -2,8 +2,6 @@
     session_start();
 
     abstract class Product {
-        public $wrongSKU = false;
-
         public function &getSKU($args) {
             return $args['skuField'];
         }
@@ -13,7 +11,7 @@
         }
 
         public function &getPrice($args) {
-            return $args['priceField'];
+            return number_format((float)$args['priceField'], 2, '.', '')." $";
         }
 
         public function &getType($args) {
@@ -21,6 +19,8 @@
         }
 
         abstract function addToDatabase($args);
+
+        abstract function displayProduct($args);
     }
 
     class DVD extends Product {
@@ -29,32 +29,24 @@
         }
 
         function addToDatabase($args) {
-            try {
-                $databaseHandle = new PDO('mysql:host=localhost;dbname=db_products', 'root', '');
-            }
-            catch (PDOException $e) {
-                print("Error: " . $e->getMessage());
-            }
+            $db = new DatabaseActivity();
 
-            $sql = $databaseHandle->prepare('INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_size) VALUES (?, ?, ?, ?, ?)');
-            $sql->bindParam(1, $this->getSKU($args));
-            $sql->bindParam(2, $this->getName($args));
-            $sql->bindParam(3, $this->getPrice($args));
-            $sql->bindParam(4, $this->getType($args));
-            $sql->bindParam(5, $this->getSize($args));
+            $sku = $this->getSKU($args);
+            $name = $this->getName($args);
+            $price = $this->getPrice($args);
+            $type = $this->getType($args);
+            $size = $this->getSize($args);
 
-            try {
-                $sql->execute();
-                header("Location: ../index.php");
-            }
-            catch (PDOException $e) {
-                if($e->getCode() == 23000) {
-                    $_SESSION['repetableSKU'] = true;   
-                    header("Location: ../add-product.php");
-                }
-                else
-                    echo($e->getMessage());
-            }
+            $arr = array($sku, $name, $price, $type, $size);
+
+            $query = 'INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_size) VALUES (?, ?, ?, ?, ?)';
+            
+            $db->addProductToDatabase($sku, $query, $arr);
+        }
+
+        function displayProduct($row)
+        {
+            // TODO: Create a function to display product
         }
     }
 
@@ -64,32 +56,24 @@
         }
 
         function addToDatabase($args) {
-            try {
-                $databaseHandle = new PDO('mysql:host=localhost;dbname=db_products', 'root', '');
-            }
-            catch (PDOException $e) {
-                print("Error: " . $e->getMessage());
-            }
+            $db = new DatabaseActivity();
 
-            $sql = $databaseHandle->prepare('INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_weight) VALUES (?, ?, ?, ?, ?)');
-            $sql->bindParam(1, $this->getSKU($args));
-            $sql->bindParam(2, $this->getName($args));
-            $sql->bindParam(3, $this->getPrice($args));
-            $sql->bindParam(4, $this->getType($args));
-            $sql->bindParam(5, $this->getWeight($args));
+            $sku = $this->getSKU($args);
+            $name = $this->getName($args);
+            $price = $this->getPrice($args);
+            $type = $this->getType($args);
+            $weight = $this->getWeight($args);
 
-            try {
-                $sql->execute();
-                header("Location: ../index.php");
-            }
-            catch (PDOException $e) {
-                if($e->getCode() == 23000) {
-                    $_SESSION['repetableSKU'] = true;
-                    header("Location: ../add-product.php");
-                }
-                else
-                    echo($e->getMessage());
-            }
+            $arr = array($sku, $name, $price, $type, $weight);
+
+            $query = 'INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_weight) VALUES (?, ?, ?, ?, ?)';
+            
+            $db->addProductToDatabase($sku, $query, $arr);
+        }
+
+        function displayProduct($args)
+        {
+            
         }
     }
 
@@ -107,38 +91,111 @@
         }
 
         function addToDatabase($args) {
+            $db = new DatabaseActivity();
+
+            $sku = $this->getSKU($args);
+            $name = $this->getName($args);
+            $price = $this->getPrice($args);
+            $type = $this->getType($args);
+            $height = $this->getHeight($args);
+            $width = $this->getWidth($args);
+            $length = $this->getLength($args);
+
+            $arr = array($sku, $name, $price, $type, $height, $width, $length);
+
+            $query = 'INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_height, product_width, product_length) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            
+            $db->addProductToDatabase($sku, $query, $arr);
+        }
+
+        function displayProduct($args)
+        {
+            
+        }
+    }
+
+    class DatabaseActivity {
+        public function __construct()
+        {
             try {
-                $databaseHandle = new PDO('mysql:host=localhost;dbname=db_products', 'root', '');
+                $this->databaseHandle = new PDO('mysql:host=localhost;dbname=db_products', 'root', '');
             }
             catch (PDOException $e) {
                 print("Error: " . $e->getMessage());
             }
+        }
 
-            $sql = $databaseHandle->prepare('INSERT INTO tbl_products (product_sku, product_name, product_price, product_type, product_height, product_width, product_length) VALUES (?, ?, ?, ?, ?, ?, ?)');
-            $sql->bindParam(1, $this->getSKU($args));
-            $sql->bindParam(2, $this->getName($args));
-            $sql->bindParam(3, $this->getPrice($args));
-            $sql->bindParam(4, $this->getType($args));
-            $sql->bindParam(5, $this->getHeight($args));
-            $sql->bindParam(6, $this->getWidth($args));
-            $sql->bindParam(7, $this->getLength($args));
+        function checkIfSkuIsTaken($sku) {
+            $checkForSkuSql = $this->databaseHandle->prepare('SELECT * FROM tbl_products WHERE product_sku = ?');
+            $checkForSkuSql->bindParam(1, $sku);
+            $checkForSkuSql->execute();
+            $result = $checkForSkuSql->fetchAll(PDO::FETCH_ASSOC);
+
+            if($result) {
+                $_SESSION['repeatableSKU'] = true;
+                return true;
+            }
+            else 
+                return false;
+        }
+
+        function addProductToDatabase($sku, $sqlRequest, $args) {
+            if($this->checkIfSkuIsTaken($sku) == true) {
+                header("Location: ../add-product.php");
+                return;
+            }
+
+            $sql = $this->databaseHandle->prepare($sqlRequest);
+            
+            $length = count($args);
+
+            for($i = 0; $i < $length; $i++) {
+                $sql->bindParam((1 + $i), $args[$i]);
+            }
+
+            $sql->execute();
+            header("Location: ../index.php");
+        }
+
+        function deleteProductFromDatabase() {
+            if(isset($_POST['deleteCheckbox'])) {
+                $products = $_POST['deleteCheckbox'];
+        
+                $sql = $this->databaseHandle->prepare('DELETE FROM tbl_products WHERE product_sku = ?');
+        
+                try {
+                    foreach($products as $productSKU) {
+                        $sql->bindParam(1, $productSKU);
+                        $sql->execute();   
+                    }
+                }
+                catch (PDOException $e) {
+                    echo($e->getMessage());
+                }
+            }
+        }
+
+        function displayProductsFromDatabase() {
+            $sql = $this->databaseHandle->prepare('SELECT * FROM tbl_products');
 
             try {
                 $sql->execute();
-                header("Location: ../index.php");
+                $result = $sql->fetchAll();
+
+                foreach($result as $row) {
+                    $productType = $row['product_type']; 
+
+                    $product = new $productType();
+                    $product->displayProduct($row);
+                }
             }
             catch (PDOException $e) {
-                if($e->getCode() == 23000) {
-                    $_SESSION['repetableSKU'] = true;
-                    header("Location: ../add-product.php");
-                }
-                else
-                    echo($e->getMessage());
+                echo($e->getMessage());
             }
         }
     }
 
-    function addProductToDatabase() {
+    function addProduct() {
         // Variable for storing $_POST values.
         $args = array();
 
@@ -156,5 +213,5 @@
         $product->addToDatabase($args);
     }
 
-    addProductToDatabase();
+    addProduct();
 ?>

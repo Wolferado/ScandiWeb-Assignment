@@ -57,17 +57,17 @@
                 <span>Please, provide dimensions</span>
             </fieldset>
 
-            <span id="input-warning">Sample Text</span>
+            <span id="input-warning"></span>
 
             <?php
                 // Using session variable to check, if SKU that got entered is already taken.
-                if(empty($_SESSION['repetableSKU'])) {
-                    $_SESSION['repetableSKU'] = false;
+                if(empty($_SESSION['repeatableSKU'])) {
+                    $_SESSION['repeatableSKU'] = false;
                 }
 
-                if($_SESSION['repetableSKU'] == true) {
+                if($_SESSION['repeatableSKU'] == true) {
                     echo("<span>SKU is taken, try another");
-                    $_SESSION['repetableSKU'] = false;
+                    $_SESSION['repeatableSKU'] = false;
                 }
             ?>
         </form>
