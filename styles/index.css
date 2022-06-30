@@ -105,8 +105,10 @@ footer {
 
 @media (max-width: 850px) {
     .product {
-        width: calc(100% - 86%);
-        height: calc(100% - 75%);
+        width: calc(100% - 78%);
+        height: calc(100% - 60%);
+        font-size: 12px;
+        margin: 3px;
     }
 }
 

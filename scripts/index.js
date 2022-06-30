@@ -24,7 +24,6 @@
 
 // Function to adapt footer, based on the row count of product list.
 (function footerAdaptiveness() {
-    let productList = $("#product-list");
     let products = $(".product");
 
     if(products.length > 8) {
