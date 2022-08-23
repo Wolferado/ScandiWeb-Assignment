@@ -4,6 +4,17 @@ This repository contains the source code for the assignment for Junior Web Devel
 
 List of requirements and criteria can be found [HERE][Requirements].
 
+Preview:
+
+<div align=center>
+
+<img src="./materials/Product_List_Page.jpeg" width=70%>
+<img src="./materials/Product_Add_Page.jpeg" width=70%>
+
+</div>
+
+<br>
+
 <span align="center">
 
 ## Feedback/Learning points _(in chronological order)_
