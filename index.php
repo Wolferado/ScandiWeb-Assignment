@@ -18,8 +18,9 @@
     <section id="product-list">
         <form method="POST" action="scripts/product.php">
             <?php
-                include("scripts/product.php");
-                displayExistingProducts();
+                require('scripts/product.php');
+                $db = new DatabaseActivity();
+                $db->displayProductsFromDatabase();
             ?>
         </form>
     </section>
