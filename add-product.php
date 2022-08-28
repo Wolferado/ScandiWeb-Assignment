@@ -20,7 +20,7 @@
         </div>
     </header>
     <section>
-        <form id="product_form" method="post" action="scripts/product.php">
+        <form id="product_form" method="post" action="./scripts/form-submission.php">
             <label for="sku">SKU</label>
             <input id="sku" name="skuField" type="text" autocomplete="off"> 
             <label for="name">Name</label>
@@ -59,17 +59,13 @@
 
             <span id="input-warning"></span>
 
-            <?php
-                // Using session variable to check, if SKU that got entered is already taken.
-                if(empty($_SESSION['repeatableSKU'])) {
-                    $_SESSION['repeatableSKU'] = false;
-                }
-
-                if($_SESSION['repeatableSKU'] == true) {
-                    echo("<span>SKU is taken, try another");
-                    $_SESSION['repeatableSKU'] = false;
-                }
-            ?>
+            <div id="sku-taken-values-container">
+                <?php
+                    require('./scripts/database.php');
+                    $database = new DatabaseActivity();
+                    $database->outputAllSkuTakenValues();
+                ?>
+            </div>
         </form>
     </section>
     <footer>
@@ -78,4 +74,4 @@
 </body>
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="scripts/add-product.js"></script>
+<script src="./scripts/add-product.js"></script>

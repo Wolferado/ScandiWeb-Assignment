@@ -27,11 +27,23 @@
 
             // Check if result contains any data and return boolean value.
             if($result) {
-                $_SESSION['repeatableSKU'] = true;
                 return true;
             }
             else 
                 return false;
+        }
+
+        // Function to output taken SKU field values from database.
+        public function outputAllSkuTakenValues() {
+            // Preparing and executing SQL query for getting product based on the SKU value.
+            $query = $this->databaseHandle->prepare('SELECT product_sku FROM tbl_products');
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach($result as $value) {
+                echo $value['product_sku']." ";
+            }
         }
 
         // Function to add entered product to database.
@@ -95,6 +107,8 @@
 
                 foreach($result as $row) {
                     $productType = $row['product_type']; 
+
+                    require_once ('./scripts/products/'.$productType.'.php');
 
                     $product = new $productType();
                     $product->displayProduct($row);

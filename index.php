@@ -16,9 +16,9 @@
         </div>
     </header>
     <section id="product-list">
-        <form method="POST" action="scripts/product.php">
+        <form method="POST" action="scripts/form-submission.php">
             <?php
-                require('scripts/product.php');
+                require('./scripts/database.php');
                 $db = new DatabaseActivity();
                 $db->displayProductsFromDatabase();
             ?>

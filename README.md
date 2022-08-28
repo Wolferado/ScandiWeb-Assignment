@@ -32,4 +32,8 @@ Preview:
 * Procedural PHP code is allowed exclusively to initialize your PHP classes. Rest logic should be placed within class methods.
 * Instead of the WET coding principle use WET and implement your _addToDatabase_ function only within the parent class, instead of having it in each type-specific class.
 
+### 26th of August
+* Adjust your file structure and separate classes, do not declare them all in one file.
+* Notification messages should appear on the same page without reloading. _(Case when non-unique SKU is entered)_
+
 [Requirements]: https://www.notion.so/Junior-Developer-Test-Task-1b2184e40dea47df840b7c0cc638e61e 

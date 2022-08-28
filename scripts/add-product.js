@@ -30,29 +30,43 @@
     });
 })();
 
-// Function to check, if form fields have correct input (not negative or zero and not empty).
+// Function to check, if form fields have correct input (not negative or zero, not empty and SKU value isn't taken).
 function checkFormFields(form) {
     let inputs = $("input:visible");
     let warning = $("#input-warning");
+    let takenSkuValues = $("#sku-taken-values-container").text();
+
     for(let i = 0; i < inputs.length; i++) {
+        if(inputs.eq(i).val().length == 0) {
+            warning.text("Please, submit required data");
+            if(warning.is(":hidden"))
+                warning.slideToggle();
+            return;
+        }
+
         switch(i) {
+            case 0:
+                const valueArray = takenSkuValues.split(' ');
+                for(let i = 0; i < valueArray.length; i++) {
+                    if(valueArray[i] == inputs.eq(0).val()) {
+                        warning.text("SKU is taken, try another");
+                        if(warning.is(":hidden"))
+                            warning.slideToggle();
+                        return;
+                    }
+                }
+                break;
             case 2:
             case 3:
             case 4:
             case 5:
                 if(parseFloat(inputs.eq(i).val()) <= 0) {
                     warning.text("Please, provide the data of indicated type");
-                    warning.show();
+                    if(warning.is(":hidden"))
+                        warning.slideToggle();
                     return;
                 }
                 break;  
-        }
-
-        if(inputs.eq(i).val().length == 0) {
-            warning.text("Please, submit required data");
-            if(warning.is(":hidden"))
-                warning.slideToggle();
-            return;
         }
     }
 
