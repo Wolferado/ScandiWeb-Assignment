@@ -1,5 +1,9 @@
 # ScandiWeb's Assignment (Junior Web Developer position)
 
+## IMPORTANT NOTE!
+Repository is archived due to completely finished assignment and interview phase.
+##
+
 This repository contains the source code for the assignment for Junior Web Developer position at ScandiWeb.
 
 List of requirements and criteria can be found [HERE][Requirements].
